@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Celebrating my dear baby's 24th birthday!</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: "Gill Sans", sans-serif;
+      background: #93cdfa;
+      color: #333;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #006fcf;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .hidden { display: none; }
+    input[type="text"] {
+      padding: 8px;
+      font-size: 1em;
+      margin-top: 10px;
+      width: 250px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #000000;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #58f0b3;
+    }
+    #message, #nameMessage, #ageMessage, #readyMessage, #questionMessage, #feedbackMessage {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.1em;
+    }
+    #options label {
+      display: block;
+      margin: 5px 0;
+      cursor: pointer;
+      font-size: 1.1em;
+    }
+    #questionPrompt {
+      margin-top: 10px;
+      font-size: 1.3em;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>🎉 Special birthday quiz just for YOU! 🎉</h1>
+
+  <div id="quiz-container">
+
+    <!-- Name Check -->
+    <div id="name-check">
+      <p>This quiz is only meant for a very special person. I need to double check what your name is just to be sure:</p>
+      <input type="text" id="nameInput">
+      <button onclick="checkName()">Submit</button>
+      <p id="nameMessage"></p>
+    </div>
+
+    <!-- Age Check -->
+    <div id="age-check" class="hidden">
+      <p>Enter your age:</p>
+      <input type="text" id="ageInput">
+      <button onclick="checkAge()">Submit</button>
+      <p id="ageMessage"></p>
+    </div>
+
+    <!-- Ready Check -->
+    <div id="ready-check" class="hidden">
+      <p>Are you ready to choose the activities for your special day?</p>
+      <input type="text" id="readyInput">
+      <button onclick="checkReady()">Submit</button>
+      <p id="readyMessage"></p>
+    </div>
+
+    <!-- Questions -->
+    <div id="question-section" class="hidden">
+      <p id="questionPrompt"></p>
+      <div id="options"></div>
+      <button onclick="submitAnswer()">Submit Answer</button>
+      <p id="questionMessage"></p>
+    </div>
+
+    <!-- Feedback -->
+    <div id="feedback-section" class="hidden">
+      <p>Any feedback for the mastermind behind your birthday date?</p>
+      <input type="text" id="feedbackInput">
+      <button onclick="submitFeedback()">Submit</button>
+      <p id="feedbackMessage"></p>
+    </div>
+
+  </div>
+
+  <canvas id="confettiCanvas" class="hidden"></canvas>
+
+  <script>
+    // ---------- Name, Age, Ready ----------
+    const correctName = "baby";
+    const correctAge = "24";
+    const readyAnswer = "yes";
+
+    function checkName() {
+      const guess = document.getElementById("nameInput").value;
+      const msg = document.getElementById("nameMessage");
+      if (guess.toLowerCase() === correctName) {
+        msg.textContent = "Looks like you're the right person! 🎈";
+        document.getElementById("name-check").classList.add("hidden");
+        document.getElementById("age-check").classList.remove("hidden");
+      } else {
+        msg.textContent = "Hey! That's not right! Try again.";
+      }
+    }
+
+    function checkAge() {
+      const guess = document.getElementById("ageInput").value;
+      const msg = document.getElementById("ageMessage");
+      if (guess === correctAge) {
+        msg.textContent = "Good job! You've passed the test! 🎂";
+        document.getElementById("age-check").classList.add("hidden");
+        document.getElementById("ready-check").classList.remove("hidden");
+      } else {
+        msg.textContent = "Hm... you need to try again.";
+      }
+    }
+
+    function checkReady() {
+      const guess = document.getElementById("readyInput").value.toLowerCase();
+      const msg = document.getElementById("readyMessage");
+      if (guess === readyAnswer) {
+        msg.textContent = "Yay! Let's start! 🎉";
+        document.getElementById("ready-check").classList.add("hidden");
+        startQuiz();
+      } else {
+        msg.textContent = "This was not the answer I was expecting! Try again.";
+      }
+    }
+
+    // ---------- Questions ----------
+    const questions = [
+      {prompt: "Q1. Where do you think we'll be going for lunch?", options: ["MBS","Tuas","Pasir Ris"], answer: 0},
+      {prompt: "Q2. So... which restaurant do you think we'll be going to?", options: ["Bread Street Kitch by Gordon Ramsay","Black Tap","Koma"], answer: 2},
+      {prompt: "Q3. I think lunch was pretty good right... Dessert?", options: ["Yes!","Nah"], answer: 0},
+      {prompt: "Q4. Super full tummies now. Shall we go for our next activity?", options: ["Yep, I am so excited ><","Nope, I want to go home now (boo...)"], answer: 0},
+      {prompt: "Q5. Quick question! Do you love your girlfriend?", options: ["Yes. I love her SO MUCH and I would do anything to make her happy."], answer: 0},
+      {prompt: "Q6. Guess what we'll be doing for our next activity?", options: ["Art Science Museum exhibition","Public Garden","Shopping spreeeee"], answer: 1},
+      {prompt: "Q7. Okay! That was so fun! Dinner?", options: ["Yes, I am pretty hungry","Hm... nah (why would you choose this?)"], answer: 0},
+      {prompt: "Q8. Second last question of the day... How would you rate your birthday date?", options: ["0/10, so bad that I would not do it EVER AGAIN :(","5/10, it was meh","10/10, it was great!","EXCEEDED EXPECTATIONS! It was so amazing that the rating is OFF THE CHARTS!"], answer: 3},
+      {prompt: "Q9. Last question! How would you rate this quiz?", options: ["-100/10, I'm such a good coder this is so lousy to me boooo","5/10, a pretty good effort but it could be better","BEST GIFT EVER!"], answer: 2}, 
+    ];
+
+    let currentQuestion = 0;
+
+    function startQuiz() {
+      document.getElementById("question-section").classList.remove("hidden");
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("questionPrompt").textContent = q.prompt;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach((opt, index) => {
+        const label = document.createElement("label");
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "option";
+        radio.value = index;
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(opt));
+        optionsDiv.appendChild(label);
+        optionsDiv.appendChild(document.createElement("br"));
+      });
+      document.getElementById("questionMessage").textContent = "";
+    }
+
+    function submitAnswer() {
+      const radios = document.getElementsByName("option");
+      let selected = -1;
+      for (const r of radios) {
+        if (r.checked) selected = parseInt(r.value);
+      }
+      const msg = document.getElementById("questionMessage");
+      if (selected === -1) {
+        msg.textContent = "Please select an option!";
+        return;
+      }
+      if (selected === questions[currentQuestion].answer) {
+        msg.textContent = "Great! You got the right answer! ✅";
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          setTimeout(showQuestion, 1000);
+        } else {
+          setTimeout(showFeedback, 1000);
+        }
+      } else {
+        msg.textContent = "Oops, try again! ❌";
+      }
+    }
+
+    // ---------- Feedback ----------
+    function showFeedback() {
+      document.getElementById("question-section").classList.add("hidden");
+      document.getElementById("feedback-section").classList.remove("hidden");
+      startConfetti();
+    }
+
+    function submitFeedback() {
+      document.getElementById("feedbackMessage").textContent = "Okay! Thanks for your feedback hehehehe... Hope you enjoyed your little birthday celebration <3 🎉";
+    }
+
+    // ---------- Confetti ----------
+    function startConfetti() {
+      const duration = 5 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        const confetti = document.createElement('div');
+        confetti.textContent = '🎊';
+        confetti.style.position = 'absolute';
+        confetti.style.fontSize = Math.random() * 30 + 20 + 'px';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.top = '-50px';
+        document.body.appendChild(confetti);
+
+        const fall = setInterval(() => {
+          const top = parseFloat(confetti.style.top);
+          if (top > window.innerHeight) {
+            clearInterval(fall);
+            confetti.remove();
+          } else {
+            confetti.style.top = top + 5 + 'px';
+          }
+        }, 20);
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+  </script>
+
+</body>
+</html>
