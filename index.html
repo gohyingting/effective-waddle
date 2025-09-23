@@ -63,7 +63,7 @@
 
     <!-- Name Check -->
     <div id="name-check">
-      <p>This quiz is only meant for a very special person. I need to double check what your name is just to be sure:</p> <img src="http://static.wikia.nocookie.net/0ab50f6b-a633-4406-b752-2cb4f12523a4/scale-to-width/755" width="500">
+      <p>This quiz is only meant for a very special person. I need to double check what your name is just to be sure:</p> 
       <input type="text" id="nameInput">
       <button onclick="checkName()">Submit</button>
       <p id="nameMessage"></p>
@@ -82,6 +82,7 @@
       <p>Are you ready to choose the activities for your special day?</p>
       <input type="text" id="readyInput">
       <button onclick="checkReady()">Submit</button>
+      <img src="http://static.wikia.nocookie.net/0ab50f6b-a633-4406-b752-2cb4f12523a4/scale-to-width/755" width="300">
       <p id="readyMessage"></p>
     </div>
 
@@ -109,7 +110,7 @@
     // ---------- Name, Age, Ready ----------
     const correctName = "baby";
     const correctAge = "24";
-    const readyAnswer = "yes";
+    const readyAnswer = "YEAH";
 
     function checkName() {
       const guess = document.getElementById("nameInput").value;
