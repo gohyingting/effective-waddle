@@ -118,7 +118,7 @@
     const readyAnswer = "YEAH";
 
     function checkName() {
-      const guess = document.getElementById("nameInput").value;
+      const guess = document.getElementById("nameInput").value.trim().toLowerCase();
       const msg = document.getElementById("nameMessage");
       if (guess.toLowerCase() === correctName) {
         msg.textContent = "Looks like you're the right person! 🎈";
