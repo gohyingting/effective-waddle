@@ -122,8 +122,10 @@
       const msg = document.getElementById("nameMessage");
       if (guess.toLowerCase() === correctName) {
         msg.textContent = "Looks like you're the right person! 🎈";
-        document.getElementById("name-check").classList.add("hidden");
-        document.getElementById("age-check").classList.remove("hidden");
+        setTimeout(() => {
+          document.getElementById("name-check").classList.add("hidden");
+          document.getElementById("age-check").classList.remove("hidden");
+        }, 1000);
       } else {
         msg.textContent = "Hey! That's not right! Try again.";
       }
