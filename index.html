@@ -136,8 +136,10 @@
       const msg = document.getElementById("ageMessage");
       if (guess === correctAge) {
         msg.textContent = "Good job! You've passed the test! 🎂";
-        document.getElementById("age-check").classList.add("hidden");
-        document.getElementById("ready-check").classList.remove("hidden");
+        setTimeout(() => {
+          document.getElementById("age-check").classList.add("hidden");
+          document.getElementById("ready-check").classList.remove("hidden");
+        }, 1000);
       } else {
         msg.textContent = "Hm... you need to try again.";
       }
@@ -148,7 +150,9 @@
       const msg = document.getElementById("readyMessage");
       if (guess.toLowerCase() === readyAnswer.toLowerCase()) {
         msg.textContent = "Yay! Let's start! 🎉";
-        document.getElementById("ready-check").classList.add("hidden");
+        setTimeout(() => {
+          document.getElementById("ready-check").classList.add("hidden");
+        }, 1000);
         startQuiz();
       } else {
         msg.textContent = "This was not the answer I was expecting! Try again.";
